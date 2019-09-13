@@ -1,10 +1,30 @@
 package com.online.trading.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class CounterParty {
 
+	@Id
+	@GeneratedValue
+	@Column(name = "ID")
+	private long Id;
+	@Column(name = "cPartyCode")
 	private String cPartyCode;
 
+	@Column(name = "cPartyValue")
 	private String cPartyValue;
+
+	public long getId() {
+		return Id;
+	}
+
+	public void setId(long id) {
+		Id = id;
+	}
 
 	public String getcPartyCode() {
 		return cPartyCode;
@@ -26,6 +46,7 @@ public class CounterParty {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + (int) (Id ^ (Id >>> 32));
 		result = prime * result + ((cPartyCode == null) ? 0 : cPartyCode.hashCode());
 		result = prime * result + ((cPartyValue == null) ? 0 : cPartyValue.hashCode());
 		return result;
@@ -40,6 +61,8 @@ public class CounterParty {
 		if (getClass() != obj.getClass())
 			return false;
 		CounterParty other = (CounterParty) obj;
+		if (Id != other.Id)
+			return false;
 		if (cPartyCode == null) {
 			if (other.cPartyCode != null)
 				return false;
@@ -55,7 +78,7 @@ public class CounterParty {
 
 	@Override
 	public String toString() {
-		return "CounterParty [cPartyCode=" + cPartyCode + ", cPartyValue=" + cPartyValue + "]";
+		return "CounterParty [Id=" + Id + ", cPartyCode=" + cPartyCode + ", cPartyValue=" + cPartyValue + "]";
 	}
 
 }
