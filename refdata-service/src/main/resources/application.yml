@@ -1,0 +1,28 @@
+# Service registers under this name
+# Control the InternalResourceViewResolver:
+spring:
+  application:
+    name: refdata-service
+# profile
+  profiles:
+    active: dev
+    
+# Discovery Server Access
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+# Disable Spring Boot's "Whitelabel" default error page, so we can use our own
+error:
+  whitelabel:
+    enabled:  false
+
+server:
+  port: 8082
+
+info:
+  applicationName: Metallica RefData Service
+  author: Ram Prajapati
+  version: 1.0.0
+  description: Generates feed for reference data in Commodities Price

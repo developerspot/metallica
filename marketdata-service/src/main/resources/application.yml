@@ -1,0 +1,38 @@
+# Service registers under this name
+# Control the InternalResourceViewResolver:
+spring:
+  application:
+    name: marketdata-service
+# DataBase Connection details
+  datasource:
+    url: jdbc:mysql://localhost:33099/metallica
+    password: <ENTER _ PASSWORD _ HERE >
+    username: root
+    driver-class-name: "com.mysql.jdbc.Driver"
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+
+  profiles:
+      active: dev
+    
+# Discovery Server Access
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+# Disable Spring Boot's "Whitelabel" default error page, so we can use our own
+error:
+  whitelabel:
+    enabled:  false
+
+server:
+  port: 8084
+  
+info:
+  applicationName: Metallica MarketData Service
+  author: Ram Prajapati
+  version: 1.0.0
+  description: Generates Market data for Commodities Price
