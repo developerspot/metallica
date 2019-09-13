@@ -5,8 +5,8 @@ spring:
     name: marketdata-service
 # DataBase Connection details
   datasource:
-    url: jdbc:mysql://localhost:33099/metallica
-    password: <ENTER _ PASSWORD _ HERE >
+    url: jdbc:mysql://localhost:3306/metallica
+    password: root
     username: root
     driver-class-name: "com.mysql.jdbc.Driver"
   jpa:

@@ -5,6 +5,7 @@ package com.online.trading.service;
  * @date 2019-Sep-06 3:07:52 PM 
  */
 import java.util.List;
+import java.util.Optional;
 
 import com.online.trading.model.Location;
 
@@ -18,5 +19,5 @@ public interface LocationService {
 
 	public List<Location> findLocation();
 
-	public Location findLocationById(long Id);
+	public Optional<Location> findLocationById(long Id);
 }
