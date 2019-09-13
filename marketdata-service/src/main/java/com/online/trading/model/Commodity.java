@@ -1,5 +1,9 @@
 package com.online.trading.model;
 
+/**
+ * @author rampraja1
+ * @date 2019-Sep-06 3:07:52 PM 
+ */
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

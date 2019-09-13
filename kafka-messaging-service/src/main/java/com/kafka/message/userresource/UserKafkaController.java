@@ -1,5 +1,9 @@
 package com.kafka.message.userresource;
 
+/**
+ * @author rampraja1
+ * @date 2019-Sep-06 3:07:52 PM 
+ */
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
