@@ -1,5 +1,7 @@
 package com.online.trading;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * @author rampraja1
  * @date 2019-Sep-06 3:07:52 PM 
@@ -16,7 +18,10 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 @SpringBootApplication
 public class TradeDiscoveryMicroserviceApplication {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(TradeDiscoveryMicroserviceApplication.class);
 	public static void main(String[] args) {
+
+		LOGGER.info("Main Method Invoke !!");
 		SpringApplication.run(TradeDiscoveryMicroserviceApplication.class, args);
 	}
 

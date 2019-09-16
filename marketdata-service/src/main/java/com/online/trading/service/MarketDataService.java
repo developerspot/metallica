@@ -7,6 +7,7 @@ package com.online.trading.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.online.trading.controller.MarketPrice;
 import com.online.trading.model.CounterParty;
 
 public interface MarketDataService {
@@ -20,4 +21,6 @@ public interface MarketDataService {
 	public List<CounterParty> findCounterParty();
 
 	public Optional<CounterParty> findCounterPartyById(long Id);
+	
+	public List<MarketPrice> getPrices();
 }
