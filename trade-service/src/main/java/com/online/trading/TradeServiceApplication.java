@@ -11,13 +11,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
+import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
+import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
+import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @EnableDiscoveryClient
 public class TradeServiceApplication {
-
-	public static final String TRADE_SERVICE_URL = "http://TRADE-MICROSERVICE";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TradeServiceApplication.class);
 
@@ -32,4 +36,14 @@ public class TradeServiceApplication {
 		return new RestTemplate();
 	}
 
+	@Bean
+	public MongoTemplate mongoTemplate(MongoDbFactory mongoDbFactory, MongoMappingContext context) {
+
+		MappingMongoConverter converter = new MappingMongoConverter(new DefaultDbRefResolver(mongoDbFactory), context);
+		converter.setTypeMapper(new DefaultMongoTypeMapper(null));
+
+		MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory, converter);
+
+		return mongoTemplate;
+	}
 }

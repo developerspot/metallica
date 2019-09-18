@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,18 +29,19 @@ import io.swagger.annotations.ApiResponses;
 		@ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
 
 @RestController
-@RequestMapping("/v1/")
+@RequestMapping("/v1")
 public class MarketDataController {
 
 	@Autowired
 	private MarketDataService marketDataService;
 
-	@RequestMapping(value = "{name}")
-	public String getName(@PathVariable(name = "name") String name) {
-		return "Hello  <strong style=\"color: red;\">" + name + " </strong> Responsed on : " + new Date();
-	}
+	/*
+	 * @RequestMapping(value = "{name}") public String getName(@PathVariable(name =
+	 * "name") String name) { return "Hello  <strong style=\"color: red;\">" + name
+	 * + " </strong> Responsed on : " + new Date(); }
+	 */
 
-	@GetMapping(value = "/prices", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping("/prices")
 	public List<MarketPrice> getPrices() {
 		return marketDataService.getPrices();
 	}

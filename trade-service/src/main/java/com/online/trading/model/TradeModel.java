@@ -6,15 +6,19 @@ package com.online.trading.model;
  */
 import java.util.Date;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.hateoas.Link;
 
 import com.online.trading.constant.CounterParty;
 import com.online.trading.constant.Side;
 import com.online.trading.constant.TradeStatus;
 
+@Document(collection = "TradeModel")
 public class TradeModel {
 
-	private Long tradeId;
+	@Id
+	private long id;
 	private Date tradeDate;
 	private String commodity;
 	private Side side;
@@ -88,12 +92,12 @@ public class TradeModel {
 		this.location = location;
 	}
 
-	public Long getTradeId() {
-		return tradeId;
+	public long getId() {
+		return id;
 	}
 
-	public void setTradeId(Long tradeId) {
-		this.tradeId = tradeId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	@Override
@@ -102,6 +106,7 @@ public class TradeModel {
 		int result = 1;
 		result = prime * result + ((commodity == null) ? 0 : commodity.hashCode());
 		result = prime * result + ((counterParty == null) ? 0 : counterParty.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((location == null) ? 0 : location.hashCode());
 		long temp;
 		temp = Double.doubleToLongBits(price);
@@ -110,7 +115,6 @@ public class TradeModel {
 		result = prime * result + ((side == null) ? 0 : side.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((tradeDate == null) ? 0 : tradeDate.hashCode());
-		result = prime * result + ((tradeId == null) ? 0 : tradeId.hashCode());
 		return result;
 	}
 
@@ -130,6 +134,8 @@ public class TradeModel {
 			return false;
 		if (counterParty != other.counterParty)
 			return false;
+		if (id != other.id)
+			return false;
 		if (location == null) {
 			if (other.location != null)
 				return false;
@@ -148,23 +154,18 @@ public class TradeModel {
 				return false;
 		} else if (!tradeDate.equals(other.tradeDate))
 			return false;
-		if (tradeId == null) {
-			if (other.tradeId != null)
-				return false;
-		} else if (!tradeId.equals(other.tradeId))
-			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "TradeModel [tradeId=" + tradeId + ", tradeDate=" + tradeDate + ", commodity=" + commodity + ", side="
-				+ side + ", quantity=" + quantity + ", price=" + price + ", counterParty=" + counterParty + ", status="
+		return "TradeModel [tradeId=" + id + ", tradeDate=" + tradeDate + ", commodity=" + commodity + ", side=" + side
+				+ ", quantity=" + quantity + ", price=" + price + ", counterParty=" + counterParty + ", status="
 				+ status + ", location=" + location + "]";
 	}
 
 	public void add(Link withSelfRel) {
-		
+
 	}
 
 }

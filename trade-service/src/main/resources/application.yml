@@ -6,7 +6,15 @@ spring:
 
   profiles:
       active: dev
-    
+#Local MongoDB config
+  data:
+    mongodb:
+      database: metallica
+      port: 27017
+      host: localhost
+
+
+
 # Discovery Server Access
 eureka:
   client:
@@ -20,3 +28,9 @@ error:
 
 server:
   port: 8081
+  
+info:
+  applicationName: Trade Data Service
+  author: Ram Prajapati
+  version: 1.0.0
+  description: Generates feed for Trade data in Commodities Price

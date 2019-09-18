@@ -7,49 +7,58 @@ package com.online.trading.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import com.netflix.appinfo.InstanceInfo;
+import com.netflix.discovery.EurekaClient;
+import com.netflix.discovery.shared.Application;
 import com.online.trading.constant.CounterParty;
 import com.online.trading.constant.Side;
 import com.online.trading.constant.TradeStatus;
 import com.online.trading.model.MarketPrice;
-import com.online.trading.model.Trade;
 import com.online.trading.model.TradeModel;
+import com.online.trading.repo.TradeServiceRepo;
 
 @Service
 public class TradeServiceImpl implements TradeService {
 
-	private ConcurrentHashMap<String, Trade> tradingMap = new ConcurrentHashMap<>();
+	private static final Logger logger = LoggerFactory.getLogger(TradeServiceImpl.class);
 
 	@Autowired
-	private MarketPriceAPIClient priceApi;
+	private RestTemplate restTemplate;
 
-	/*
-	 * @Autowired private TradeServiceRepo repositoty;
-	 */
+	@Autowired
+	private EurekaClient eurekaClient;
+
+	@Autowired
+	private TradeServiceRepo repositoty;
 
 	@Override
-	public TradeModel add(TradeModel tradeModel) {
-		return null;
+	public TradeModel save(TradeModel tradeModel) {
+		return repositoty.save(tradeModel);
 	}
 
 	@Override
 	public TradeModel update(TradeModel tradeModel) {
-		return null;
+		return repositoty.update(tradeModel);
 	}
 
 	@Override
 	public void delete(TradeModel tradeModel) {
+		repositoty.delete(tradeModel);
 	}
 
 	@Override
 	public List<TradeModel> getAllTrades() {
-		//return repositoty.getAllTrades();
 		List<TradeModel> list = new ArrayList<>();
 		TradeModel trade = new TradeModel();
 		trade.setCommodity("AL");
@@ -57,25 +66,40 @@ public class TradeServiceImpl implements TradeService {
 		trade.setTradeDate(new Date());
 		trade.setSide(Side.BUY);
 		trade.setStatus(TradeStatus.OPEN);
-		trade.setTradeId(111111L);
+		trade.setId(9999L);
 		list.add(trade);
 
 		CompletableFuture<List<MarketPrice>> cf = CompletableFuture.supplyAsync(() -> {
-			return priceApi.getCurrentMarketPrice();
+			return getCurrentMarketPrice();
 		});
 		cf.thenAccept(cfList -> {
-			cfList.forEach(e -> System.out.println(" Current Market Price for {} is {}"+ e.getCommodity()+ e.getPrice()));
+			cfList.forEach(
+					e -> System.out.println(" Current Market Price for {} is {}" + e.getCommodity() + e.getPrice()));
 			;
 		}).join();
 
-		// messageService.generateEvent(trade);
 		return list;
 
 	}
 
 	@Override
 	public TradeModel findTradeById(String tradeId) {
-		return null;
+		return repositoty.findTradeById(tradeId);
+	}
+
+	private List<MarketPrice> getCurrentMarketPrice() {
+		logger.info(" getCurrentMarketPrice invoked !!!");
+		Application application = eurekaClient.getApplication("MARKETDATA-SERVICE");
+		InstanceInfo instanceInfo = application.getInstances().get(0);
+		String url = "http://" + instanceInfo.getIPAddr() + ":" + instanceInfo.getPort() + "/" + "v1/prices";
+		System.out.println("URL" + url);
+
+		ResponseEntity<List<MarketPrice>> resExchange = restTemplate.exchange(url, HttpMethod.GET, null,
+				new ParameterizedTypeReference<List<MarketPrice>>() {
+				});
+		List<MarketPrice> marketPriceList = resExchange.getBody();
+		marketPriceList.stream().forEach(e -> System.out.println(e.toString()));
+		return marketPriceList;
 	}
 
 }

@@ -6,17 +6,21 @@ package com.online.trading.repo;
  */
 import java.util.List;
 
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+
 import com.online.trading.model.TradeModel;
 
-public class TradeServiceRepo {
+@Repository
+public interface TradeServiceRepo extends MongoRepository<TradeModel, Long> {
 
-	public TradeModel add(TradeModel tradeModel) {return null;}
+	public TradeModel save(TradeModel tradeModel);
 
-	public TradeModel update(TradeModel tradeModel) {return null;};
+	public TradeModel update(TradeModel tradeModel);
 
-	public void delete(TradeModel tradeModel) {}
+	public void delete(TradeModel tradeModel);
 
-	public List<TradeModel> getAllTrades(){return null;}
-	
-	public TradeModel findTradeById(String tradeId) {return null;}
+	public List<TradeModel> findAll();
+
+	public TradeModel findTradeById(String tradeId);
 }

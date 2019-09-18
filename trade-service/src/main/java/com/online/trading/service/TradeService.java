@@ -10,7 +10,7 @@ import com.online.trading.model.TradeModel;
 
 public interface TradeService {
 
-	public TradeModel add(TradeModel tradeModel);
+	public TradeModel save(TradeModel tradeModel);
 
 	public TradeModel update(TradeModel tradeModel);
 
