@@ -9,9 +9,11 @@ spring:
 #Local MongoDB config
   data:
     mongodb:
-      database: metallica
-      port: 27017
       host: localhost
+      port: 27017
+      database: metallica
+      
+      
 
 
 

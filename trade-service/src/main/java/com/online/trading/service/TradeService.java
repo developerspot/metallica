@@ -5,6 +5,7 @@ package com.online.trading.service;
  * @date 2019-Sep-06 3:07:52 PM 
  */
 import java.util.List;
+import java.util.Optional;
 
 import com.online.trading.model.TradeModel;
 
@@ -17,6 +18,6 @@ public interface TradeService {
 	public void delete(TradeModel tradeModel);
 
 	public List<TradeModel> getAllTrades();
-	
-	public TradeModel findTradeById(String tradeId);
+
+	public Optional<TradeModel> findTradeById(Long tradeId);
 }

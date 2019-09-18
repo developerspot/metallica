@@ -14,11 +14,11 @@ import com.online.trading.constant.CounterParty;
 import com.online.trading.constant.Side;
 import com.online.trading.constant.TradeStatus;
 
-@Document(collection = "TradeModel")
+@Document(collection = "tradeModel")
 public class TradeModel {
 
 	@Id
-	private long id;
+	private int id;
 	private Date tradeDate;
 	private String commodity;
 	private Side side;
@@ -96,7 +96,7 @@ public class TradeModel {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

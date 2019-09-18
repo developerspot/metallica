@@ -7,6 +7,7 @@ package com.online.trading.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import com.netflix.appinfo.InstanceInfo;
@@ -29,6 +31,7 @@ import com.online.trading.model.TradeModel;
 import com.online.trading.repo.TradeServiceRepo;
 
 @Service
+@Transactional
 public class TradeServiceImpl implements TradeService {
 
 	private static final Logger logger = LoggerFactory.getLogger(TradeServiceImpl.class);
@@ -49,7 +52,7 @@ public class TradeServiceImpl implements TradeService {
 
 	@Override
 	public TradeModel update(TradeModel tradeModel) {
-		return repositoty.update(tradeModel);
+		return repositoty.save(tradeModel);
 	}
 
 	@Override
@@ -66,7 +69,7 @@ public class TradeServiceImpl implements TradeService {
 		trade.setTradeDate(new Date());
 		trade.setSide(Side.BUY);
 		trade.setStatus(TradeStatus.OPEN);
-		trade.setId(9999L);
+		trade.setId(9999);
 		list.add(trade);
 
 		CompletableFuture<List<MarketPrice>> cf = CompletableFuture.supplyAsync(() -> {
@@ -83,8 +86,8 @@ public class TradeServiceImpl implements TradeService {
 	}
 
 	@Override
-	public TradeModel findTradeById(String tradeId) {
-		return repositoty.findTradeById(tradeId);
+	public Optional<TradeModel> findTradeById(Long tradeId) {
+		return repositoty.findById(tradeId);
 	}
 
 	private List<MarketPrice> getCurrentMarketPrice() {

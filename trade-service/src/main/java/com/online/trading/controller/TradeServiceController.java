@@ -7,6 +7,7 @@ package com.online.trading.controller;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -17,13 +18,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -73,11 +75,9 @@ public class TradeServiceController {
 	 * @return Trade
 	 */
 	@GetMapping(path = "/{tradeId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public TradeModel getTradeById(@PathVariable("tradeId") String tradeId) {
+	public Optional<TradeModel> getTradeById(@PathVariable("tradeId") String tradeId) {
 		logger.info("Controller Layer: getTradeById for TradeId <<" + tradeId);
-		TradeModel tradeModel = tradeService.findTradeById(tradeId);
-		tradeModel.add(
-				ControllerLinkBuilder.linkTo(TradeServiceController.class).slash(tradeModel.getId()).withSelfRel());
+		Optional<TradeModel> tradeModel = tradeService.findTradeById(Long.valueOf(tradeId));
 		return tradeModel;
 	}
 
@@ -106,30 +106,30 @@ public class TradeServiceController {
 		return Collections.singletonMap("message", "Hello World");
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
+	@PostMapping(value = "/create")
 	@ResponseStatus(HttpStatus.CREATED)
-	TradeModel create(@RequestBody @Valid TradeModel todoEntry) {
-		return tradeService.save(todoEntry);
+	TradeModel create(@RequestBody @Valid TradeModel tradeModel) {
+		return tradeService.save(tradeModel);
 	}
 
-	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "/delete/{id}")
 	void delete(@PathVariable("id") String id) {
 		TradeModel tradeModel = new TradeModel();
-		tradeModel.setId(Long.valueOf(id));
+		tradeModel.setId(Integer.valueOf(id));
 		tradeService.delete(tradeModel);
 	}
 
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping(value = "/getall")
 	List<TradeModel> findAll() {
 		return tradeService.getAllTrades();
 	}
 
-	@RequestMapping(value = "{id}", method = RequestMethod.GET)
-	TradeModel findById(@PathVariable("id") String id) {
-		return tradeService.findTradeById(id);
+	@GetMapping(value = "/getbyid/{id}")
+	Optional<TradeModel> findById(@PathVariable("id") String id) {
+		return tradeService.findTradeById(Long.valueOf(id));
 	}
 
-	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
+	@PutMapping(value = "/update/{id}")
 	TradeModel update(@RequestBody @Valid TradeModel todoEntry) {
 		return tradeService.update(todoEntry);
 	}
