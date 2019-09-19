@@ -6,16 +6,24 @@ package com.online.trading.controller;
  */
 import java.util.Date;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.online.trading.exception.ResourceNotFoundException;
+import com.online.trading.model.CounterParty;
 import com.online.trading.model.MarketPrice;
 import com.online.trading.service.MarketDataService;
 
@@ -47,19 +55,33 @@ public class MarketDataController {
 		return marketDataService.getPrices();
 	}
 
+	@GetMapping("/prices/{id}")
+	public ResponseEntity<CounterParty> getPrices(@PathVariable long id) throws ResourceNotFoundException {
+		CounterParty counterParty = marketDataService.findCounterPartyById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Counter Party not found for this id :: " + id));
+		return ResponseEntity.ok().body(counterParty);
+	}
+
 	@PostMapping
-	public String postMarketData(@PathVariable String request) {
+	public String postMarketData(@Valid @RequestBody CounterParty counterParty) {
+		marketDataService.addCounterParty(counterParty);
 		return "MarketData Request Accepted  for storing !!";
 	}
 
 	@PutMapping
-	public String putMarketData(@PathVariable String request) {
+	public String putMarketData(@Valid @RequestBody CounterParty counterParty) {
+		marketDataService.updateCounterParty(counterParty);
 		return "MarketData Request Accepted for updation!!";
 	}
 
-	@DeleteMapping
-	public String deletMarketData(@PathVariable String request) {
-		return "MarketData Request Accepted for deletion !!";
+	@DeleteMapping("delete/{id}")
+	public Map<String, Boolean> deletMarketData(@PathVariable(value = "id") long id) throws ResourceNotFoundException {
+		CounterParty counterParty = marketDataService.findCounterPartyById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Market Price not found for this id :: " + id));
+		marketDataService.deleteCounterPartyById(counterParty.getId());
+		Map<String, Boolean> response = new HashMap<>();
+		response.put("deleted", Boolean.TRUE);
+		return response;
 	}
 
 }

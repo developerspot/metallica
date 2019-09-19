@@ -2,15 +2,21 @@
  * 
  */
 package com.online.trading.controller;
+/**
+ * @author rampraja1
+ * @date 2019-Sep-06 3:07:52 PM 
+ */
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.online.trading.exception.ResourceNotFoundException;
 import com.online.trading.model.MarketPrice;
 import com.online.trading.service.MarketPriceService;
 
@@ -58,10 +65,15 @@ public class MarketPriceController {
 	}
 
 	@ApiOperation(value = "Delete Market Data With Market ID")
-	@DeleteMapping("delete")
-	public void delete(@Valid @RequestBody MarketPrice marketPrice) {
+	@DeleteMapping("delete/{id}")
+	public Map<String, Boolean> delete(@Valid @PathVariable(value = "id") long id) throws ResourceNotFoundException {
 		logger.info("Market data Service has been Deleted !!!");
-		marketPriceService.delete(marketPrice);
+		MarketPrice marketPrice1 = marketPriceService.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Market Price not found for this id :: " + id));
+		marketPriceService.delete(marketPrice1);
+		Map<String, Boolean> response = new HashMap<>();
+		response.put("deleted", Boolean.TRUE);
+		return response;
 	}
 
 	@ApiOperation(value = "View a list of Market Data Service details ", response = Iterable.class)
@@ -81,9 +93,12 @@ public class MarketPriceController {
 			@ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
 			@ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
 	@GetMapping("/byId/{id}")
-	public Optional<MarketPrice> findById(
-			@ApiParam(value = "Market id from which Market Price object will retrieve", required = true) @PathVariable(value = "id") Long id) {
+	public ResponseEntity<MarketPrice> findById(
+			@ApiParam(value = "Market id from which Market Price object will retrieve", required = true) @PathVariable(value = "id") Long id)
+			throws ResourceNotFoundException {
 		logger.info("find by id Market data Service !!!");
-		return marketPriceService.findById(id);
+		MarketPrice marketPrice = marketPriceService.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Market Price not found for this id :: " + id));
+		return ResponseEntity.ok().body(marketPrice);
 	}
 }
