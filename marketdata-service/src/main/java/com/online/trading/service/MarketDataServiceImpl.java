@@ -18,8 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.online.trading.controller.MarketPrice;
 import com.online.trading.model.CounterParty;
+import com.online.trading.model.MarketPrice;
 import com.online.trading.repository.CounterPartyRepository;
 
 @Service

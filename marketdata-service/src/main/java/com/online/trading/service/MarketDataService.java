@@ -7,8 +7,8 @@ package com.online.trading.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.online.trading.controller.MarketPrice;
 import com.online.trading.model.CounterParty;
+import com.online.trading.model.MarketPrice;
 
 public interface MarketDataService {
 

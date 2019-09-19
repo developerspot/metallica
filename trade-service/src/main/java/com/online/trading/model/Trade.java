@@ -10,23 +10,37 @@ import java.util.Date;
 import com.online.trading.constant.Side;
 import com.online.trading.constant.TradeStatus;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /*  Trade Class which contains the information/attributes for Counterparty, commodity & Location
  * 
  * 
  */
 
+@ApiModel(description = "All details about the Trade. ")
 public class Trade implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3916799568276833414L;
-
+	@ApiModelProperty(notes = "The database generated Trade ID")
 	private long tradeId;
+
+	@ApiModelProperty(notes = "Trade Side define to SELL & Buy Trade")
 	private Side side;
+
+	@ApiModelProperty(notes = "Trade useda Quanity to Sell or Buy ")
 	private int quantity;
+
+	@ApiModelProperty(notes = "Trade desifine a Price Value ")
 	private double price;
+
+	@ApiModelProperty(notes = "Trade Date to check Date of Trading ")
 	private Date tradedate;
+
+	@ApiModelProperty(notes = "Trade status to check open & Closed")
 	private TradeStatus status;
 
 	public Side getSide() {

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.online.trading.controller;
+package com.online.trading.model;
 
 import java.math.BigDecimal;
 

@@ -14,18 +14,39 @@ import com.online.trading.constant.CounterParty;
 import com.online.trading.constant.Side;
 import com.online.trading.constant.TradeStatus;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 @Document(collection = "tradeModel")
+@ApiModel(description = "All details about the Trade Model")
 public class TradeModel {
 
 	@Id
+	@ApiModelProperty(notes = "Database generate the Trade Id")
 	private int id;
+
+	@ApiModelProperty(notes = "Trade date ")
 	private Date tradeDate;
+
+	@ApiModelProperty(notes = "Trade Commodity")
 	private String commodity;
+
+	@ApiModelProperty(notes = "Trade Side")
 	private Side side;
+
+	@ApiModelProperty(notes = "Trade Quantity")
 	private int quantity;
+
+	@ApiModelProperty(notes = "Trade Price")
 	private double price;
+
+	@ApiModelProperty(notes = "trade Counter Party ")
 	private CounterParty counterParty;
+
+	@ApiModelProperty(notes = "Trade Status ")
 	private TradeStatus status;
+
+	@ApiModelProperty(notes = "Trade Location ")
 	private String location;
 
 	public Date getTradeDate() {

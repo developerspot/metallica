@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.online.trading.model.MarketPrice;
 import com.online.trading.service.MarketDataService;
 
 import io.swagger.annotations.ApiOperation;
