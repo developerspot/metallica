@@ -13,6 +13,10 @@ import java.util.concurrent.CompletableFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +36,7 @@ import com.online.trading.repo.TradeServiceRepo;
 
 @Service
 @Transactional
+@CacheConfig(cacheNames = { "tradedatacache" })
 public class TradeServiceImpl implements TradeService {
 
 	private static final Logger logger = LoggerFactory.getLogger(TradeServiceImpl.class);
@@ -45,21 +50,25 @@ public class TradeServiceImpl implements TradeService {
 	@Autowired
 	private TradeServiceRepo repositoty;
 
+	@Cacheable
 	@Override
 	public TradeModel save(TradeModel tradeModel) {
 		return repositoty.save(tradeModel);
 	}
 
+	@CachePut
 	@Override
 	public TradeModel update(TradeModel tradeModel) {
 		return repositoty.save(tradeModel);
 	}
 
+	@CacheEvict
 	@Override
 	public void delete(TradeModel tradeModel) {
 		repositoty.delete(tradeModel);
 	}
 
+	@Cacheable
 	@Override
 	public List<TradeModel> getAllTrades() {
 		List<TradeModel> list = new ArrayList<>();
@@ -85,6 +94,7 @@ public class TradeServiceImpl implements TradeService {
 
 	}
 
+	@Cacheable
 	@Override
 	public Optional<TradeModel> findTradeById(Long tradeId) {
 		return repositoty.findById(tradeId);

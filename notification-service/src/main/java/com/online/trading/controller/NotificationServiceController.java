@@ -1,5 +1,9 @@
 package com.online.trading.controller;
 
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 /**
  * @author rampraja1
@@ -22,29 +26,35 @@ import io.swagger.annotations.ApiResponses;
 		@ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
 
 @RestController
+@CacheConfig(cacheNames = { "notificationcache" })
 public class NotificationServiceController {
 
+	@Cacheable
 	@GetMapping("/notification")
 	public String getNotificationMesage() {
 		return "Notification Service";
 	}
 
+	@Cacheable
 	@GetMapping
 	public String getNotification() {
 
 		return "Notification service";
 	}
 
+	@Cacheable
 	@PostMapping
 	public String postNotification(@PathVariable String request) {
 		return "Notification Request Accepted  for storing !!";
 	}
 
+	@CachePut
 	@PutMapping
 	public String putNotification(@PathVariable String request) {
 		return "Notification Request Accepted for updation!!";
 	}
 
+	@CacheEvict
 	@DeleteMapping
 	public String deletNotification(@PathVariable String request) {
 		return "Notification Request Accepted for deletion !!";

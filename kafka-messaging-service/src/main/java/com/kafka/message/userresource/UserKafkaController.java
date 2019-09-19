@@ -5,6 +5,10 @@ package com.kafka.message.userresource;
  * @date 2019-Sep-06 3:07:52 PM 
  */
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +31,7 @@ import io.swagger.annotations.ApiResponses;
 		@ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
 @RestController
 @RequestMapping("/kafka")
+@CacheConfig(cacheNames = { "kafkamessagecache" })
 public class UserKafkaController {
 
 	@Autowired
@@ -42,7 +47,7 @@ public class UserKafkaController {
 	 * 
 	 * return "Publichsed Successful"; }
 	 */
-
+	@Cacheable
 	@GetMapping("/publish/v1/{name}/{id}")
 	public String jsonPost(@PathVariable("name") String name, @PathVariable("id") int id) {
 
@@ -51,16 +56,19 @@ public class UserKafkaController {
 		return "Publichsed Successful";
 	}
 
+	@Cacheable
 	@PostMapping
 	public String postKafkaMessage(@PathVariable String request) {
 		return "Kafka Messaging Request Accepted  for storing !!";
 	}
 
+	@CachePut
 	@PutMapping
 	public String putKafkaMessage(@PathVariable String request) {
 		return "Kafka Messaging Request Accepted for updation!!";
 	}
 
+	@CacheEvict
 	@DeleteMapping
 	public String deletKafkaMessage(@PathVariable String request) {
 		return "Kafka Messaging Request Accepted for deletion !!";

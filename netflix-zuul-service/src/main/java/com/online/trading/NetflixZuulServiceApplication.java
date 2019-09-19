@@ -6,6 +6,7 @@ package com.online.trading;
  */
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,7 @@ import com.online.trading.filter.RouteFilter;
 @SpringBootApplication
 @EnableZuulProxy
 @EnableEurekaClient
+@EnableCaching
 public class NetflixZuulServiceApplication {
 
 	public static void main(String[] args) {

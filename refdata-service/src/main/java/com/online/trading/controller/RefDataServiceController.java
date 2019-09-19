@@ -6,6 +6,10 @@ package com.online.trading.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,32 +29,38 @@ import io.swagger.annotations.ApiResponses;
 		@ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
 
 @RestController
+@CacheConfig(cacheNames = { "refdatacache" })
 public class RefDataServiceController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(RefDataServiceController.class);
 
+	@Cacheable
 	@RequestMapping
 	public String helloWorld() {
 		LOGGER.info("Request for Hello World Message");
 		return "Hello World";
 	}
 
+	@Cacheable
 	@GetMapping
 	public String getRefData() {
 
 		return "reference Data service";
 	}
 
+	@Cacheable
 	@PostMapping
 	public String postRefData(@PathVariable String request) {
 		return "Reference Data Request Accepted  for storing !!";
 	}
 
+	@CachePut
 	@PutMapping
 	public String putRefData(@PathVariable String request) {
 		return "Reference Data Request Accepted for updation!!";
 	}
 
+	@CacheEvict
 	@DeleteMapping
 	public String deletRefData(@PathVariable String request) {
 		return "Reference Data Request Accepted for deletion !!";
