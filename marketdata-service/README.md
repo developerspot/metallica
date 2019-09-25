@@ -1,3 +1,0 @@
-# metallica
-
-Market Data Service.
